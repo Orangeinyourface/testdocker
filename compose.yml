@@ -1,0 +1,44 @@
+version: '3.3'
+services:
+  phpapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: php
+    image: php:8.2-apache
+    ports:
+      - 8181:80
+    volumes:
+      - ./php:/var/www/html
+    environment:  
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: mdp123456789
+      MYSQL_DATABASE: database_nomdbtest
+    networks:
+      - lan
+
+
+  db:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root_passtest123
+      MYSQL_DATABASE: database_nomdbtest
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: mdp123456789
+    networks:
+      - lan
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: db
+      PMA_USER: user
+      PMA_PASSWORD: mdp123456789
+    ports:
+      - 8080:80
+    networks:
+      - lan
+
+networks:
+  lan:
+    external: false
